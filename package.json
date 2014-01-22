@@ -1,0 +1,31 @@
+{
+  "name": "co-rethinkdb",
+  "version": "0.1.0",
+  "author": "Markus Ast <npm.m@rkusa.st>",
+  "description": "Generator based querying goodness for RethinkDB",
+  "keywords": [
+    "rethinkdb",
+    "NoSQL",
+    "reql",
+    "query language",
+    "co",
+    "es6",
+    "ecmascript6",
+    "harmony",
+    "generator"
+  ],
+  "homepage": "https://github.com/rkusa/co-rethinkdb",
+  "dependencies": {
+    "co": "~3.0.2",
+    "rethinkdb": "~1.11.0-3"
+  },
+  "bugs": "https://github.com/rkusa/co-rethinkdb/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rkusa/co-rethinkdb.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.11.2"
+  }
+}
