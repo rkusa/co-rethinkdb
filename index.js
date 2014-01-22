@@ -26,8 +26,22 @@ r.connect = function(opts) {
 }
 
 var Cursor = require('rethinkdb/cursor').Cursor
-  , toArray = Cursor.prototype.toArray
+
+var next = Cursor.prototype.next
+Cursor.prototype.next = function() {
+  return next.bind(this)
+}
+
+var each = Cursor.prototype.each
+Cursor.prototype.each = function(cb) {
+  this.next = next
+  return each.bind(this, cb)
+}
+
+var toArray = Cursor.prototype.toArray
 Cursor.prototype.toArray = function() {
+  this.each = each
+  this.next = next
   return toArray.bind(this)
 }
 
