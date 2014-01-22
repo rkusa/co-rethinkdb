@@ -36,21 +36,3 @@ r.getConnection = function*() {
 }
 
 module.exports = r
-
-// co(function*() {
-//   // r.getConnection = function(callback) {
-//   //   co(function*() {
-//   //     callback(yield r.connect({ db: 'tdengine' }))
-//   //   })()
-//   // }
-//   r.getConnection = function*() {
-//     return yield r.connect({ db: 'tdengine' })
-//   }
-//   // console.log(yield r.table('buildings').orderBy('pos'))
-//   // console.log(asd.call)
-//   var cursor = yield r.table('buildings')
-//   var buildings = yield cursor.toArray()
-//   console.log(buildings)
-
-//   // conn.close()
-// })()
