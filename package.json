@@ -1,6 +1,6 @@
 {
   "name": "co-rethinkdb",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Markus Ast <npm.m@rkusa.st>",
   "description": "Generator based querying goodness for RethinkDB",
   "keywords": [
