@@ -20,6 +20,7 @@ var cache = toReset.map(function(path) {
 })
 
 var r = require('rethinkdb')
+  , Cursor = require('rethinkdb/cursor').Cursor
 
 // restore cache
 toReset.forEach(function(path, i) {
@@ -58,8 +59,6 @@ var connect = r.connect
 r.connect = function(opts) {
   return connect.bind(r, opts)
 }
-
-var Cursor = require('rethinkdb/cursor').Cursor
 
 // Wrap the original `.next()` method.
 var next = Cursor.prototype.next
