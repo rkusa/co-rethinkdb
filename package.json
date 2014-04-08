@@ -1,6 +1,6 @@
 {
   "name": "co-rethinkdb",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": "Markus Ast <npm.m@rkusa.st>",
   "description": "Generator based querying goodness for RethinkDB",
   "keywords": [
@@ -16,8 +16,8 @@
   ],
   "homepage": "https://github.com/rkusa/co-rethinkdb",
   "dependencies": {
-    "co": "~3.0.2",
-    "rethinkdb": "~1.11.0-3"
+    "co": "^3.0.5",
+    "rethinkdb": "~1.12.0-0"
   },
   "bugs": "https://github.com/rkusa/co-rethinkdb/issues",
   "repository": {
