@@ -2,6 +2,9 @@
 
 [RethinkDB](https://github.com/rethinkdb/rethinkdb) querying language for [co](https://github.com/visionmedia/co). This library provides a wrapper for RethinkDB's [JavaScript driver](http://rethinkdb.com/api/javascript/).
 
+[![NPM](https://badge.fury.io/js/co-rethinkdb.png)](https://npmjs.org/package/co-rethinkdb)
+[![Dependency Status](https://david-dm.org/rkusa/co-rethinkdb.png?theme=shields.io)](https://david-dm.org/rkusa/co-rethinkdb)
+
 ## Examples
 
 ```js
