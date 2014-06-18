@@ -2,8 +2,12 @@
 
 [RethinkDB](https://github.com/rethinkdb/rethinkdb) querying language for [co](https://github.com/visionmedia/co). This library provides a wrapper for RethinkDB's [JavaScript driver](http://rethinkdb.com/api/javascript/).
 
-[![NPM](https://badge.fury.io/js/co-rethinkdb.png)](https://npmjs.org/package/co-rethinkdb)
-[![Dependency Status](https://david-dm.org/rkusa/co-rethinkdb.png?theme=shields.io)](https://david-dm.org/rkusa/co-rethinkdb)
+[![NPM](http://img.shields.io/npm/v/co-rethinkdb.svg?style=flat)](https://npmjs.org/package/co-rethinkdb)
+[![Dependency Status](http://img.shields.io/gemnasium/rkusa/co-rethinkdb.svg?style=flat)](https://david-dm.org/rkusa/co-rethinkdb)
+
+With [RethinkDB 1.13](http://rethinkdb.com/blog/1.13-release/) the official JavaScript driver supports Promises. Since `co` supports Promises directly, a wrapper is not required anymore. However, `co-rethinkdb` still supports some API goodness by not having to call `.run()` all the time.
+
+Use `co-rethinkdb` version `0.3.0` for RethinkDB prior to `1.13`.
 
 ## Examples
 
@@ -14,7 +18,7 @@ co(function*() {
   var user = yield r.table('users').get(1).run(conn)
   ...
   conn.close()
-})
+})()
 ```
 
 ### Without `.run()`
@@ -32,7 +36,7 @@ co(function*() {
   var user = yield r.table('users').get(1)
   ...
   conn.close()
-})
+})()
 ```
 
 ### Koa Middleware

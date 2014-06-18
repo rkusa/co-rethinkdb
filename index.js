@@ -20,7 +20,7 @@ var cache = toReset.map(function(path) {
 })
 
 var r = require('rethinkdb')
-  , Cursor = require('rethinkdb/cursor').Cursor
+var IterableResult = require('rethinkdb/cursor').Cursor.__super__.constructor
 
 // restore cache
 toReset.forEach(function(path, i) {
@@ -42,43 +42,15 @@ RDBOp.prototype.call = function(_, done) {
   var query = this
   co(function*() {
     var conn = yield r.getConnection
-    run.call(query, conn, done)
+    done(null, yield run.call(query, conn))
   })()
 }
 
-// Wrap the original `.run()` method.
-RDBOp.prototype.run = function(conn) {
-  var query = this
-  return function(done) {
-    run.call(query, conn, done)
-  }
-}
-
-// Wrap the original `.connect()` method.
-var connect = r.connect
-r.connect = function(opts) {
-  return connect.bind(r, opts)
-}
-
-// Wrap the original `.next()` method.
-var next = Cursor.prototype.next
-Cursor.prototype.next = function() {
-  return next.bind(this)
-}
-
 // Wrap the original `.each()` method.
-var each = Cursor.prototype.each
-Cursor.prototype.each = function(cb) {
-  this.next = next
-  return each.bind(this, cb)
-}
-
-// Wrap the original `.toArray()` method.
-var toArray = Cursor.prototype.toArray
-Cursor.prototype.toArray = function() {
-  this.each = each
-  this.next = next
-  return toArray.bind(this)
+var each = IterableResult.prototype._each
+IterableResult.prototype._each = function(cb, finished) {
+  if (finished) return each.call(this, cb, finished)
+  else return each.bind(this, cb)
 }
 
 r.getConnection = function*() {
