@@ -42,7 +42,9 @@ RDBOp.prototype.call = function(_, done) {
   var query = this
   co(function*() {
     var conn = yield r.getConnection
-    done(null, yield run.call(query, conn))
+    var res  = yield run.call(query, conn)
+    yield r.releaseConnection(conn)
+    done(null, res)
   })()
 }
 
@@ -55,6 +57,9 @@ IterableResult.prototype._each = function(cb, finished) {
 
 r.getConnection = function*() {
   throw new Error('No connection available')
+}
+
+r.releaseConnection = function*() {
 }
 
 module.exports = r

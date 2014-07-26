@@ -3,7 +3,7 @@
 [RethinkDB](https://github.com/rethinkdb/rethinkdb) querying language for [co](https://github.com/visionmedia/co). This library provides a wrapper for RethinkDB's [JavaScript driver](http://rethinkdb.com/api/javascript/).
 
 [![NPM](http://img.shields.io/npm/v/co-rethinkdb.svg?style=flat)](https://npmjs.org/package/co-rethinkdb)
-[![Dependency Status](http://img.shields.io/gemnasium/rkusa/co-rethinkdb.svg?style=flat)](https://david-dm.org/rkusa/co-rethinkdb)
+[![Dependency Status](http://img.shields.io/david/rkusa/co-rethinkdb.svg?style=flat)](https://david-dm.org/rkusa/co-rethinkdb)
 
 With [RethinkDB 1.13](http://rethinkdb.com/blog/1.13-release/) the official JavaScript driver supports Promises. Since `co` supports Promises directly, a wrapper is not required anymore. However, `co-rethinkdb` still supports some API goodness by not having to call `.run()` all the time.
 
@@ -60,6 +60,37 @@ app.use(function*(next) {
 app.use(function*(next) {
   var user = yield r.table('users').get(1)
   ...
+})
+```
+
+### Load Balancer
+
+The counterpart to `r.getConnection()` is `r.releaseConnection()`. This can be used to plug in a load balancer, e.g.:
+
+```js
+var Pool = require('jacuzzi').Pool
+var r = require('co-rethinkdb')
+
+r.getConnection = function*() {
+  return yield pool.acquire.bind(pool)
+}
+
+r.releaseConnection = function*(conn) {
+  pool.release(conn)
+}
+
+var pool = new Pool({
+  create: function(callback) {
+    r.connect({ db: 'tdengine' })
+    .then(function(conn) { callback(null, conn) })
+    .catch(callback)
+  },
+  destroy: function(conn, callback) {
+    conn.close(callback)
+  },
+  check: function(conn) {
+    return conn.open === true
+  }
 })
 ```
 
