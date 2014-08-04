@@ -39,6 +39,22 @@ co(function*() {
 })()
 ```
 
+### In non-generator context
+
+With `co-rethinkdb` each RethinkDB query is directly a Promise. If called, it uses `r.getConnection` to retrieve a connection.
+
+```js
+var conn
+
+r.getConnection = function*() {
+  return conn || (conn = yield r.connect({ db: db }))
+}
+
+r.table('users').get(1).then(function(user) {
+  ...
+})
+```
+
 ### Koa Middleware
 
 ```js

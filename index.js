@@ -35,17 +35,27 @@ var RDBOp = r.table('mock').constructor.__super__.constructor
 // the original run method
 var run = RDBOp.prototype.run
 
-// Since every rethinkdb method call, e.g., r.table('...') retuns a
-// function, `co` is going to call their `.call()` method making it
-// the perfect place to execute the `.run()` method instead.
-RDBOp.prototype.call = function(_, done) {
-  var query = this
-  co(function*() {
-    var conn = yield r.getConnection
-    var res  = yield run.call(query, conn)
-    yield r.releaseConnection(conn)
-    done(null, res)
-  })()
+// Adding a `.then()` method to the object returned by, .e.g., `r.table('...')`
+// makes `co` to recognize these objects as promises, making the `.then()`
+// method the perfect place to execute the `.run()` method instead.
+
+var Promise = require('bluebird')
+RDBOp.prototype.then = function() {
+  if (!this._promise) {
+    var query = this
+    this._promise = new Promise(function(resolve, reject) {
+      co(function*() {
+        var conn = yield r.getConnection
+        var res  = yield run.call(query, conn)
+        yield r.releaseConnection(conn)
+        resolve(res)
+      })(function(err) {
+        reject(err)
+      })
+    })
+  }
+
+  this._promise.then.apply(this._promise, arguments)
 }
 
 // Wrap the original `.each()` method.
